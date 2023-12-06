@@ -2,9 +2,6 @@
 create schema if not exists company;
 use company;
 
--- not suported by mysql
--- create domain D_num as int check(D_num> 0 and D_num <21);
-
 CREATE TABLE employee(
 	Fname varchar(15) not null,
     Minit char,
@@ -16,11 +13,12 @@ CREATE TABLE employee(
     Salary decimal(10,2),
     Super_ssn char(9),
     Dno int not null,
+    constraint chk_salary_employee check (Salary> 2000.0),
     constraint pk_employee primary key (Ssn)
 );
 
 -- alter table add, drop or modify
-alter table employee modify Dno int not null default 1;
+-- alter table employee modify Dno int not null default 1;
 
 -- modificando a foreign key -> drop e add
 alter table employee 
@@ -63,6 +61,7 @@ create table dept_locations(
     constraint fk_dept_locations foreign key (Dnumber) references departament (Dnumber)
 );
 
+alter table dept_locations drop constraint fk_dept_locations;
 alter table dept_locations 
 	add constraint fk_dept_locations foreign key (Dnumber) references departament(Dnumber)
 	on delete cascade
@@ -83,8 +82,8 @@ create table works_on(
     Pno int not null,
     Hours decimal(3,1) not null,
     primary key (Essn, Pno),
-    constraint fk_works_on foreign key (Essn) references departament(Ssn),
-    foreign key (Pno) references project(Pnumber)
+    constraint fk_employee_works_on foreign key (Essn) references employee(Ssn),
+    constraint fk_project_works_on foreign key (Pno) references project(Pnumber)
 );
 
 create table dependent(
