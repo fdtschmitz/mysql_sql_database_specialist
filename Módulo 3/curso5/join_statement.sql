@@ -123,6 +123,18 @@ FROM works_on
     ON Essn = Ssn
 group by Pname;
 
+-- employee + works_on + project
+
+SELECT concat(Fname, ' ', Lname) as Full_name,
+	Dno as DeptNumber,
+    Pname as ProjectName,
+    Pno as ProjectNumber,
+    Plocation as Location from employee
+	INNER JOIN works_on on Ssn = Essn
+    INNER JOIN project on Pno = Pnumber
+	where Pname like 'Product%'
+    order by Pnumber;
+
 
 --
 --
